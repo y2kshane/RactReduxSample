@@ -1,7 +1,7 @@
 import { GET_EMPLOYEES } from '../actionTypes';
 
 const initialState = {
-  employees: [],
+  employeeList: [],
 };
 
 const sampleResult = {
@@ -36,7 +36,7 @@ export default (state = initialState, action) => {
     case GET_EMPLOYEES: {
       return {
         ...state,
-        employees: sampleResult,
+        employeeList: sampleResult.data,
       };
     }
     default:
