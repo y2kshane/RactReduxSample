@@ -1,17 +1,19 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { GET_EMPLOYEES } from './actionTypes';
+import { getEmployeesSucceeded, getEmployeesFailed } from './actions';
+import { getEmployees } from '../apis/api';
 
-function* fetchEmployees(action) {
+function* fetchEmployees() {
   try {
-    const user = yield call(Api.fetchUser, action.payload.userId);
-    yield put({ type: 'USER_FETCH_SUCCEEDED', user: user });
+    const apiResponse = yield call(getEmployees);
+    yield put(getEmployeesSucceeded({ data: apiResponse.data.data }));
   } catch (e) {
-    yield put({ type: 'USER_FETCH_FAILED', message: e.message });
+    yield put(getEmployeesFailed({ message: e.message }));
   }
 }
 
 function* saga() {
-  yield takeLatest('USER_FETCH_REQUESTED', fetchUser);
+  yield takeLatest(GET_EMPLOYEES, fetchEmployees);
 }
 
 export default saga;

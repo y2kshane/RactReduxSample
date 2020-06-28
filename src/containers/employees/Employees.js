@@ -33,7 +33,6 @@ const columns = [
 ];
 
 function Employees(props) {
-  const [loading, setLoading] = useState(false);
   useEffect(() => {
     props.getEmployees();
   }, []);
@@ -44,17 +43,20 @@ function Employees(props) {
 
   const dataTable = (
     <span>
-      {' '}
-      <Button type="primary" onClick={refreshData} loading={loading}>
+      <Button type="primary" onClick={refreshData} loading={props.loading}>
         Reload
       </Button>
-      <Table dataSource={props.employeeList} columns={columns} />{' '}
+      <Table dataSource={props.employeeList} columns={columns} />
     </span>
   );
   return <div>{props.employeeList ? dataTable : <Spin />}</div>;
 }
 
-const mapStateToProps = (state) => ({ employeeList: state.employeeReducer.employeeList });
+const mapStateToProps = (state) => ({
+  employeeList: state.employeeReducer.employeeList,
+  loading: state.employeeReducer.employeeListPending,
+  error: state.employeeReducer.employeeListError,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   getEmployees: () => dispatch(getEmployees()),
